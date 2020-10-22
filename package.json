@@ -6,7 +6,6 @@
   "scripts": {
     "preinstall": "npm i typescript",
     "start": "nodemon dist/index.js",
-    "postinstall": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "author": "",
