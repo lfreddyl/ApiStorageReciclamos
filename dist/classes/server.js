@@ -89,6 +89,9 @@ class Server {
                 res.send('File uploaded to ' + uploadPath);
             });
         });
+        this.app.route('/sms').get((req, res) => {
+            res.send('hola como estas');
+        });
         //SERVICIOS PARA SUBIR IMAGENES DE USERS
         this.app.route('/uploadusers').post((req, res) => {
             let sampleFile;

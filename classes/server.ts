@@ -85,7 +85,7 @@ private constructor(){
         });
       });
       this.app.route('/sms').get((req:Request, res:Response) =>{
-      res.send('hola')
+      res.send('hola como estas')
       });
             //SERVICIOS PARA SUBIR IMAGENES DE USERS
     this.app.route('/uploadusers').post((req:Request, res:Response) =>{
