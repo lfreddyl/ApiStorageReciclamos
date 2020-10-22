@@ -84,6 +84,9 @@ private constructor(){
           res.send('File uploaded to ' + uploadPath);
         });
       });
+      this.app.route('/sms').get((req:Request, res:Response) =>{
+      res.send('hola')
+      });
             //SERVICIOS PARA SUBIR IMAGENES DE USERS
     this.app.route('/uploadusers').post((req:Request, res:Response) =>{
         let sampleFile;
