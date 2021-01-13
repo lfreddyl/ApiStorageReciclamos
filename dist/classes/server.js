@@ -29,7 +29,7 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const fs_1 = __importDefault(require("fs"));
 const routeProducts = ("uploads/imgproducts");
 const routeUsers = ("uploads/imgusers");
-const routeStores = ("uploads/imgstores");
+const routePublicaciones = ("uploads/imgpublicaciones");
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -40,7 +40,7 @@ class Server {
             express_1.response.send(err);
         });
         this.app.use('/imgusers', express_1.default.static(routeUsers));
-        this.app.use('/imgpstores', express_1.default.static(routeStores));
+        this.app.use('/imgpublicaciones', express_1.default.static(routePublicaciones));
         //SERVICIOS PARA SUBIR IMAGENES DE PRODUCTOS
         this.app.route('/uploadproducts').post((req, res) => {
             let sampleFile;
@@ -71,26 +71,34 @@ class Server {
             });
         });
         //SERVICIOS PARA SUBIR IMAGENES DE TENDAS
-        this.app.route('/uploadstores').post((req, res) => {
+        this.app.route('/uploadpublicaciones').post((req, res) => {
             let sampleFile;
             let uploadPath;
+            let nombreImagen;
             if (!req.files || Object.keys(req.files).length === 0) {
                 res.status(400).send('No files were uploaded.');
                 return;
             }
-            console.log('req.files >>>', req.files); // eslint-disable-line
             sampleFile = req.files.picture;
-            uploadPath = `./uploads/imgstores/${sampleFile.name}`;
+            uploadPath = `./uploads/imgpublicaciones/${sampleFile.name}`;
+            nombreImagen = sampleFile.name;
             sampleFile.mv(uploadPath, function (err) {
                 if (err) {
-                    console.log(err);
-                    return res.status(200).send(err);
+                    res.status(400).json({
+                        STATUS: 'FAILURE',
+                        MESSAGE: 'Hubo un problema la subir la imagen',
+                        DATA: err
+                    });
                 }
-                res.send('File uploaded to ' + uploadPath);
+                res.status(200).json({
+                    STATUS: 'SUCCESS',
+                    MESSAGE: 'La imagen se subio',
+                    DATA: nombreImagen
+                });
             });
         });
         this.app.route('/sms').get((req, res) => {
-            res.send('hola como estas');
+            res.send('hola como estas f');
         });
         //SERVICIOS PARA SUBIR IMAGENES DE USERS
         this.app.route('/uploadusers').post((req, res) => {

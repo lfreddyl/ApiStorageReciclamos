@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import fs from 'fs'
 const routeProducts = ("uploads/imgproducts");
 const routeUsers = ("uploads/imgusers");
-const routeStores = ("uploads/imgstores");
+const routePublicaciones = ("uploads/imgpublicaciones");
 export default class Server{
 private static _intance: Server;
 
@@ -24,7 +24,7 @@ private constructor(){
         response.send(err)
     })
     this.app.use('/imgusers',express.static(routeUsers))
-    this.app.use('/imgpstores',express.static(routeStores))
+    this.app.use('/imgpublicaciones',express.static(routePublicaciones))
     
     //SERVICIOS PARA SUBIR IMAGENES DE PRODUCTOS
     this.app.route('/uploadproducts').post((req:Request, res:Response) =>{
@@ -61,27 +61,33 @@ private constructor(){
         });
       });
       //SERVICIOS PARA SUBIR IMAGENES DE TENDAS
-    this.app.route('/uploadstores').post((req:Request, res:Response) =>{
+    this.app.route('/uploadpublicaciones').post((req:Request, res:Response) =>{
         let sampleFile;
         let uploadPath: any;
-    
+        let nombreImagen:string
         if (!req.files || Object.keys(req.files).length === 0) {
           res.status(400).send('No files were uploaded.');
           return;
         }
       
-        console.log('req.files >>>', req.files); // eslint-disable-line
-      
         sampleFile = req.files.picture;
         
-        uploadPath=`./uploads/imgstores/${sampleFile.name}`;
+        uploadPath=`./uploads/imgpublicaciones/${sampleFile.name}`;
+        nombreImagen=sampleFile.name
         sampleFile.mv(uploadPath, function(err) {
           if (err) {
-              console.log(err)
-            return res.status(200).send(err);
+            res.status(400).json({
+              STATUS: 'FAILURE',
+              MESSAGE: 'Hubo un problema la subir la imagen',
+              DATA:err
+          });
           }
-      
-          res.send('File uploaded to ' + uploadPath);
+          res.status(200).json({
+            STATUS: 'SUCCESS',
+            MESSAGE: 'La imagen se subio',
+            DATA:nombreImagen
+        });
+          
         });
       });
       this.app.route('/sms').get((req:Request, res:Response) =>{
@@ -117,6 +123,9 @@ private constructor(){
 
    
 }
+
+
+
 private config(): void {
     // support application/json type post data
     this.app.use(bodyParser.json());
