@@ -16,10 +16,11 @@ public port:number;
 private constructor(){
     
     this.app=express();
+    this.config();
     this.port=SERVER_PORT;
     this.app.use(fileUpload({
     }));
-    this.config();
+    
     this.app.use('/imgproductos',express.static(routeProducts),(err)=>{
         response.send(err)
     })

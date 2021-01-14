@@ -33,9 +33,9 @@ const routePublicaciones = ("uploads/imgpublicaciones");
 class Server {
     constructor() {
         this.app = express_1.default();
+        this.config();
         this.port = env_1.SERVER_PORT;
         this.app.use(express_fileupload_1.default({}));
-        this.config();
         this.app.use('/imgproductos', express_1.default.static(routeProducts), (err) => {
             express_1.response.send(err);
         });
